@@ -1,172 +1,129 @@
+# Docker & Containers: A Beginner's Guide
 
-## What is a container ?
+## What is a Container?
 
-A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another. A Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries and settings.
+A container is a standard unit of software that packages up code and all its dependencies so the application runs quickly and reliably from one computing environment to another. A Docker container image is a lightweight, standalone, executable package of software that includes everything needed to run an application: code, runtime, system tools, system libraries, and settings.
 
-Ok, let me make it easy !!!
+**In simple terms:** A container is a bundle of your application, the libraries it needs to run, and the minimum system dependencies — nothing more, nothing less.
 
-A container is a bundle of Application, Application libraries required to run your application and the minimum system dependencies.
-
-![Screenshot 2023-02-07 at 7 18 10 PM](https://user-images.githubusercontent.com/43399466/217262726-7cabcb5b-074d-45cc-950e-84f7119e7162.png)
-
+![Container Diagram](https://user-images.githubusercontent.com/43399466/217262726-7cabcb5b-074d-45cc-950e-84f7119e7162.png)
 
 
-## Containers vs Virtual Machine 
+
+## Containers vs Virtual Machines
 
 Containers and virtual machines are both technologies used to isolate applications and their dependencies, but they have some key differences:
 
-    1. Resource Utilization: Containers share the host operating system kernel, making them lighter and faster than VMs. VMs have a full-fledged OS and hypervisor, making them more resource-intensive.
+1. **Resource Utilization:** Containers share the host operating system kernel, making them lighter and faster than VMs. VMs have a full-fledged OS and hypervisor, making them more resource-intensive.
 
-    2. Portability: Containers are designed to be portable and can run on any system with a compatible host operating system. VMs are less portable as they need a compatible hypervisor to run.
+2. **Portability:** Containers are designed to be portable and can run on any system with a compatible host operating system. VMs are less portable as they need a compatible hypervisor to run.
 
-    3. Security: VMs provide a higher level of security as each VM has its own operating system and can be isolated from the host and other VMs. Containers provide less isolation, as they share the host operating system.
+3. **Security:** VMs provide a higher level of security as each VM has its own operating system and can be isolated from the host and other VMs. Containers provide less isolation since they share the host operating system.
 
-   4.  Management: Managing containers is typically easier than managing VMs, as containers are designed to be lightweight and fast-moving.
-
-
-
-## Why are containers light weight ?
-
-Containers are lightweight because they use a technology called containerization, which allows them to share the host operating system's kernel and libraries, while still providing isolation for the application and its dependencies. This results in a smaller footprint compared to traditional virtual machines, as the containers do not need to include a full operating system. Additionally, Docker containers are designed to be minimal, only including what is necessary for the application to run, further reducing their size.
-
-Let's try to understand this with an example:
-
-Below is the screenshot of official ubuntu base image which you can use for your container. It's just ~ 22 MB, isn't it very small ? on a contrary if you look at official ubuntu VM image it will be close to ~ 2.3 GB. So the container base image is almost 100 times less than VM image.
-
-![Screenshot 2023-02-08 at 3 12 38 PM](https://user-images.githubusercontent.com/43399466/217493284-85411ae0-b283-4475-9729-6b082e35fc7d.png)
-
-
-To provide a better picture of files and folders that containers base images have and files and folders that containers use from host operating system (not 100 percent accurate -> varies from base image to base image). Refer below.
+4. **Management:** Managing containers is typically easier than managing VMs, as containers are designed to be lightweight and fast-moving.
 
 
 
-### Files and Folders in containers base images
+## Why Are Containers Lightweight?
+
+Containers are lightweight because they use a technology called containerization, which allows them to share the host operating system's kernel and libraries while still providing isolation for the application and its dependencies. This results in a smaller footprint compared to traditional virtual machines, as containers do not need to include a full operating system. Additionally, Docker containers are designed to be minimal — only including what is necessary for the application to run.
+
+**Example:** The official Ubuntu base image used for containers is just ~22 MB. In contrast, the official Ubuntu VM image is close to ~2.3 GB. The container base image is roughly 100 times smaller.
+
+![Ubuntu Base Image Size](https://user-images.githubusercontent.com/43399466/217493284-85411ae0-b283-4475-9729-6b082e35fc7d.png)
+
+
+### Files and Folders in Container Base Images
 
 ```
-    /bin: contains binary executable files, such as the ls, cp, and ps commands.
-
-    /sbin: contains system binary executable files, such as the init and shutdown commands.
-
-    /etc: contains configuration files for various system services.
-
-    /lib: contains library files that are used by the binary executables.
-
-    /usr: contains user-related files and utilities, such as applications, libraries, and documentation.
-
-    /var: contains variable data, such as log files, spool files, and temporary files.
-
-    /root: is the home directory of the root user.
+/bin   - Binary executables (ls, cp, ps, etc.)
+/sbin  - System binary executables (init, shutdown, etc.)
+/etc   - Configuration files for various system services
+/lib   - Library files used by binary executables
+/usr   - User-related files and utilities (apps, libraries, documentation)
+/var   - Variable data such as log files, spool files, and temp files
+/root  - Home directory of the root user
 ```
 
 
-
-### Files and Folders that containers use from host operating system
+### Files and Folders Containers Use from the Host OS
 
 ```
-    The host's file system: Docker containers can access the host file system using bind mounts, which allow the container to read and write files in the host file system.
-
-    Networking stack: The host's networking stack is used to provide network connectivity to the container. Docker containers can be connected to the host's network directly or through a virtual network.
-
-    System calls: The host's kernel handles system calls from the container, which is how the container accesses the host's resources, such as CPU, memory, and I/O.
-
-    Namespaces: Docker containers use Linux namespaces to create isolated environments for the container's processes. Namespaces provide isolation for resources such as the file system, process ID, and network.
-
-    Control groups (cgroups): Docker containers use cgroups to limit and control the amount of resources, such as CPU, memory, and I/O, that a container can access.
-    
+Host file system   - Accessible via bind mounts (read/write files on the host)
+Networking stack   - Host's network provides connectivity to the container
+System calls       - Host kernel handles system calls (CPU, memory, I/O access)
+Namespaces         - Provides isolation for file system, process IDs, and network
+Control groups     - Limits and controls resource usage (CPU, memory, I/O)
 ```
 
-It's important to note that while a container uses resources from the host operating system, it is still isolated from the host and other containers, so changes to the container do not affect the host or other containers.
+> **Note:** While a container uses resources from the host OS, it remains isolated from the host and other containers. Changes inside a container do not affect the host or other containers.
 
-**Note:** There are multiple ways to reduce your VM image size as well, but I am just talking about the default for easy comparision and understanding.
-
-so, in a nutshell, container base images are typically smaller compared to VM images because they are designed to be minimalist and only contain the necessary components for running a specific application or service. VMs, on the other hand, emulate an entire operating system, including all its libraries, utilities, and system files, resulting in a much larger size. 
-
-I hope it is now very clear why containers are light weight in nature.
+In summary, container base images are significantly smaller than VM images because they are designed to be minimalist and only contain the components needed to run a specific application. VMs, on the other hand, emulate an entire operating system — including all libraries, utilities, and system files — resulting in a much larger size.
 
 
 
 ## Docker
 
+### What is Docker?
 
-### What is Docker ?
+Docker is a containerization platform that provides an easy way to containerize your applications. Using Docker, you can:
+- Build container images
+- Run images to create containers
+- Push containers to registries such as Docker Hub, Quay.io, and more
 
-Docker is a containerization platform that provides easy way to containerize your applications, which means, using Docker you can build container images, run the images to create containers and also push these containers to container regestries such as DockerHub, Quay.io and so on.
-
-In simple words, you can understand as `containerization is a concept or technology` and `Docker Implements Containerization`.
-
-
-### Docker Architecture ?
-
-![image](https://user-images.githubusercontent.com/43399466/217507877-212d3a60-143a-4a1d-ab79-4bb615cb4622.png)
-
-The above picture, clearly indicates that Docker Deamon is brain of Docker. If Docker Deamon is killed, stops working for some reasons, Docker is brain dead :p (sarcasm intended).
-
-### Docker LifeCycle 
-
-We can use the above Image as reference to understand the lifecycle of Docker.
-
-There are three important things,
-
-1. docker build -> builds docker images from Dockerfile
-2. docker run   -> runs container from docker images
-3. docker push  -> push the container image to public/private regestries to share the docker images.
-
-![Screenshot 2023-02-08 at 4 32 13 PM](https://user-images.githubusercontent.com/43399466/217511949-81f897b2-70ee-41d1-b229-38d0572c54c7.png)
+In simple terms: **containerization is the concept or technology**, and **Docker is the tool that implements it**.
 
 
+### Docker Architecture
 
-### Understanding the terminology (Inspired from Docker Docs)
+![Docker Architecture](https://user-images.githubusercontent.com/43399466/217507877-212d3a60-143a-4a1d-ab79-4bb615cb4622.png)
 
-
-#### Docker daemon
-
-The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services.
+The Docker daemon (`dockerd`) is the brain of Docker. If the daemon stops working for any reason, Docker stops functioning entirely.
 
 
-#### Docker client
+### Docker Lifecycle
 
-The Docker client (docker) is the primary way that many Docker users interact with Docker. When you use commands such as docker run, the client sends these commands to dockerd, which carries them out. The docker command uses the Docker API. The Docker client can communicate with more than one daemon.
+There are three core commands in the Docker lifecycle:
 
+1. `docker build` → Builds a Docker image from a Dockerfile
+2. `docker run`   → Creates and runs a container from an image
+3. `docker push`  → Pushes the image to a public or private registry
+
+![Docker Lifecycle](https://user-images.githubusercontent.com/43399466/217511949-81f897b2-70ee-41d1-b229-38d0572c54c7.png)
+
+
+### Key Terminology
+
+#### Docker Daemon
+The Docker daemon (`dockerd`) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes. A daemon can also communicate with other daemons to manage Docker services.
+
+#### Docker Client
+The Docker client (`docker`) is the primary way users interact with Docker. When you run commands such as `docker run`, the client sends these commands to `dockerd`, which carries them out.
 
 #### Docker Desktop
+Docker Desktop is an easy-to-install application for Mac, Windows, or Linux that enables you to build and share containerized applications and microservices. It includes the Docker daemon, Docker client, Docker Compose, Docker Content Trust, Kubernetes, and a Credential Helper.
 
-Docker Desktop is an easy-to-install application for your Mac, Windows or Linux environment that enables you to build and share containerized applications and microservices. Docker Desktop includes the Docker daemon (dockerd), the Docker client (docker), Docker Compose, Docker Content Trust, Kubernetes, and Credential Helper. For more information, see Docker Desktop.
+#### Docker Registries
+A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images there by default. You can also run your own private registry.
 
-
-#### Docker registries
-
-A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. You can even run your own private registry.
-
-When you use the docker pull or docker run commands, the required images are pulled from your configured registry. When you use the docker push command, your image is pushed to your configured registry.
-Docker objects
-
-When you use Docker, you are creating and using images, containers, networks, volumes, plugins, and other objects. This section is a brief overview of some of those objects.
-
+- `docker pull` / `docker run` → Images are pulled from your configured registry
+- `docker push` → Your image is pushed to your configured registry
 
 #### Dockerfile
-
-Dockerfile is a file where you provide the steps to build your Docker Image. 
-
+A Dockerfile is a text file where you define the steps to build your Docker image.
 
 #### Images
-
-An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization. For example, you may build an image which is based on the ubuntu image, but installs the Apache web server and your application, as well as the configuration details needed to make your application run.
-
-You might create your own images or you might only use those created by others and published in a registry. To build your own image, you create a Dockerfile with a simple syntax for defining the steps needed to create the image and run it. Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild the image, only those layers which have changed are rebuilt. This is part of what makes images so lightweight, small, and fast, when compared to other virtualization technologies.
+An image is a read-only template with instructions for creating a Docker container. Images are often based on another image, with some additional customization. Each instruction in a Dockerfile creates a layer in the image. When you change the Dockerfile and rebuild, only the changed layers are rebuilt — making images lightweight and fast.
 
 
 
-## INSTALL DOCKER
+## Installing Docker
 
-A very detailed instructions to install Docker are provide in the below link
+Detailed installation instructions are available at: https://docs.docker.com/get-docker/
 
-https://docs.docker.com/get-docker/
+**For a quick setup on an Ubuntu EC2 instance (AWS):**
 
-For Demo, 
-
-You can create an Ubuntu EC2 Instance on AWS and run the below commands to install docker.
-
-```
+```bash
 sudo apt update
 sudo apt install docker.io -y
 ```
@@ -174,182 +131,149 @@ sudo apt install docker.io -y
 
 ### Start Docker and Grant Access
 
-A very common mistake that many beginners do is, After they install docker using the sudo access, they miss the step to Start the Docker daemon and grant acess to the user they want to use to interact with docker and run docker commands.
+A common beginner mistake is forgetting to start the Docker daemon and grant the appropriate user access after installation.
 
-Always ensure the docker daemon is up and running.
+**Verify your Docker installation:**
 
-A easy way to verify your Docker installation is by running the below command
-
-```
+```bash
 docker run hello-world
 ```
 
-If the output says:
+If you see an error like this:
 
 ```
-docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.24/containers/create": dial unix /var/run/docker.sock: connect: permission denied.
-See 'docker run --help'.
+docker: Got permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock
 ```
 
-This can mean two things, 
-1. Docker deamon is not running.
-2. Your user does not have access to run docker commands.
+This means either:
+1. The Docker daemon is not running, or
+2. Your user does not have permission to run Docker commands.
 
 
-### Start Docker daemon
+### Start the Docker Daemon
 
-You use the below command to verify if the docker daemon is actually started and Active
+Check whether the daemon is running:
 
-```
+```bash
 sudo systemctl status docker
 ```
 
-If you notice that the docker daemon is not running, you can start the daemon using the below command
+If it is not running, start it:
 
-```
+```bash
 sudo systemctl start docker
 ```
 
 
-### Grant Access to your user to run docker commands
+### Grant Your User Access to Docker
 
-To grant access to your user to run the docker command, you should add the user to the Docker Linux group. Docker group is create by default when docker is installed.
+Add your user to the `docker` Linux group (created automatically during installation):
 
-```
+```bash
 sudo usermod -aG docker ubuntu
 ```
 
-In the above command `ubuntu` is the name of the user, you can change the username appropriately.
+Replace `ubuntu` with your actual username.
 
-**NOTE:** : You need to logout and login back for the changes to be reflected.
+> **Note:** You need to log out and log back in for this change to take effect.
 
 
-### Docker is Installed, up and running 🥳🥳
+### Verify Docker is Up and Running
 
-Use the same command again, to verify that docker is up and running.
-
-```
+```bash
 docker run hello-world
 ```
 
-Output should look like:
+Expected output:
 
 ```
-....
-....
 Hello from Docker!
 This message shows that your installation appears to be working correctly.
-...
-...
 ```
 
 
-## Great Job, Now start with the examples folder to write your first Dockerfile and move to the next examples. Happy Learning :)
 
-### Clone this repository and move to example folder
+## Hands-On: Build and Run Your First Container
 
+### Clone the Repository
+
+```bash
+git clone https://github.com/EmperorWhiteBeard/Docker
+cd Docker/examples
 ```
-git clone https://github.com/Docker
-cd  examples
-```
 
-### Login to Docker [Create an account with https://hub.docker.com/]
+### Log in to Docker Hub
 
-```
+[Create a free account at Docker Hub](https://hub.docker.com/) if you haven't already.
+
+```bash
 docker login
 ```
 
 ```
-Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
-Username: mizhabnp
+Username: your-dockerhub-username
 Password:
-WARNING! Your password will be stored unencrypted in /home/ubuntu/.docker/config.json.
-Configure a credential helper to remove this warning. See
-https://docs.docker.com/engine/reference/commandline/login/#credentials-store
-
 Login Succeeded
 ```
 
-### Build your first Docker Image
+### Build Your First Docker Image
 
-You need to change the username accoringly in the below command
+Replace `yourname` with your Docker Hub username:
+
+```bash
+docker build -t yourname/dockerimage:latest .
+```
+
+Example output:
 
 ```
-docker build -t yourname/yourname/dockerimage:latest .
-```
-
-Output of the above command
-
-```
-   Sending build context to Docker daemon  131.1kB
+Sending build context to Docker daemon  131.1kB
 Step 1/7 : FROM python:3.11-slim
- ---> ae52c5bef62a
 Step 2/7 : WORKDIR /app
- ---> Using cache
- ---> 640ae6f136de
 Step 3/7 : COPY requirements.txt .
- ---> Using cache
- ---> 23e48f3e243f
 Step 4/7 : RUN pip install --no-cache-dir -r requirements.txt
- ---> Using cache
- ---> f8aa454c04f1
 Step 5/7 : COPY . .
- ---> 0b1d3e613fa5
 Step 6/7 : ENV NAME=World
- ---> Running in 4f97a0de4696
- ---> Removed intermediate container 4f97a0de4696
- ---> c76dcbe18087
 Step 7/7 : CMD ["python3", "app.py"]
- ---> Running in 07c6d2c3efea
- ---> Removed intermediate container 07c6d2c3efea
- ---> 086a2f16a03e
 Successfully built 086a2f16a03e
 Successfully tagged yourname/dockerimage:latest
 ```
 
-### Verify Docker Image is created
+### Verify the Image Was Created
 
-```
+```bash
 docker images
 ```
 
-Output 
-
 ```
-REPOSITORY                            TAG       IMAGE ID       CREATED          SIZE
-yourname/yourname/dockerimage:latest   latest    960d37536dcd   26 seconds ago   467MB
-ubuntu                                 latest    58db3edaf2be   13 days ago      77.8MB
-hello-world                            latest    feb5d9fea6a5   16 months ago    13.3kB
+REPOSITORY                  TAG       IMAGE ID       CREATED          SIZE
+yourname/dockerimage        latest    960d37536dcd   26 seconds ago   467MB
+ubuntu                      latest    58db3edaf2be   13 days ago      77.8MB
+hello-world                 latest    feb5d9fea6a5   16 months ago    13.3kB
 ```
 
-### Run your First Docker Container
+### Run Your First Docker Container
 
+```bash
+docker run -it yourname/dockerimage:latest
 ```
-docker run -it yourname/yourname/dockerimage:latest
-```
-
-Output
 
 ```
 Hello World
 ```
 
-### Push the Image to DockerHub and share it with the world
+### Push the Image to Docker Hub
+
+```bash
+docker push yourname/dockerimage:latest
+```
 
 ```
-docker push yourname/yourname/dockerimage:latest
-```
-
-Output
-
-```
-Using default tag: latest
-The push refers to repository [docker.io/yourname/yourname/dockerimage:latest]
+The push refers to repository [docker.io/yourname/dockerimage:latest]
 896818320e80: Pushed
 b8088c305a52: Pushed
 69dd4ccec1a0: Pushed
-c5ff2d88f679: Mounted from library/ubuntu
 latest: digest: sha256:6e49841ad9e720a7baedcd41f9b666fcd7b583151d0763fe78101bb8221b1d88 size: 1157
 ```
 
-### You must be feeling like a champ already 
+Your image is now public and shareable with anyone. Great work — you've just built, run, and published your first Docker container!
