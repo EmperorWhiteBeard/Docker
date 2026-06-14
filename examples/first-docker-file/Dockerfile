@@ -1,16 +1,20 @@
-FROM ubuntu:latest
+# Use a slim, official Python image for smaller size and security
+FROM python:3.11-slim
 
-# Set the working directory in the image
+# Set the working directory
 WORKDIR /app
 
-# Copy the files from the host file system to the image file system
-COPY . /app
+# Copy only requirements first to leverage Docker layer caching
+COPY requirements.txt .
 
-# Install the necessary packages
-RUN apt-get update && apt-get install -y python3 python3-pip
+# Install dependencies without saving cache to keep image small
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application files
+COPY . .
 
 # Set environment variables
-ENV NAME World
+ENV NAME=World
 
-# Run a command to start the application
+# Run the application
 CMD ["python3", "app.py"]
